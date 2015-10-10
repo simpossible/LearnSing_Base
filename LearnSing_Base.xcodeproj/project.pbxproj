@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0467FFD81BC7529700E8551F /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0467FFD71BC7529700E8551F /* AVFoundation.framework */; };
+		0467FFDA1BC752A000E8551F /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0467FFD91BC752A000E8551F /* AudioToolbox.framework */; };
+		0467FFDC1BC752BD00E8551F /* CoreAudioKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0467FFDB1BC752BD00E8551F /* CoreAudioKit.framework */; };
 		049CD4121BC61E1100CDA6D3 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 049CD4111BC61E1100CDA6D3 /* main.m */; };
 		049CD4151BC61E1100CDA6D3 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 049CD4141BC61E1100CDA6D3 /* AppDelegate.m */; };
 		049CD4181BC61E1100CDA6D3 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 049CD4171BC61E1100CDA6D3 /* ViewController.m */; };
@@ -38,6 +41,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0467FFD71BC7529700E8551F /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		0467FFD91BC752A000E8551F /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
+		0467FFDB1BC752BD00E8551F /* CoreAudioKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudioKit.framework; path = System/Library/Frameworks/CoreAudioKit.framework; sourceTree = SDKROOT; };
 		049CD40D1BC61E1100CDA6D3 /* LearnSing_Base.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LearnSing_Base.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		049CD4111BC61E1100CDA6D3 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		049CD4131BC61E1100CDA6D3 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -67,6 +73,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0467FFDC1BC752BD00E8551F /* CoreAudioKit.framework in Frameworks */,
+				0467FFDA1BC752A000E8551F /* AudioToolbox.framework in Frameworks */,
+				0467FFD81BC7529700E8551F /* AVFoundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -90,6 +99,9 @@
 		049CD4041BC61E1100CDA6D3 = {
 			isa = PBXGroup;
 			children = (
+				0467FFDB1BC752BD00E8551F /* CoreAudioKit.framework */,
+				0467FFD91BC752A000E8551F /* AudioToolbox.framework */,
+				0467FFD71BC7529700E8551F /* AVFoundation.framework */,
 				049CD40F1BC61E1100CDA6D3 /* LearnSing_Base */,
 				049CD4291BC61E1200CDA6D3 /* LearnSing_BaseTests */,
 				049CD4341BC61E1200CDA6D3 /* LearnSing_BaseUITests */,
@@ -544,6 +556,7 @@
 				049CD43C1BC61E1200CDA6D3 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		049CD43D1BC61E1200CDA6D3 /* Build configuration list for PBXNativeTarget "LearnSing_BaseTests" */ = {
 			isa = XCConfigurationList;
@@ -552,6 +565,7 @@
 				049CD43F1BC61E1200CDA6D3 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		049CD4401BC61E1200CDA6D3 /* Build configuration list for PBXNativeTarget "LearnSing_BaseUITests" */ = {
 			isa = XCConfigurationList;
@@ -560,6 +574,7 @@
 				049CD4421BC61E1200CDA6D3 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

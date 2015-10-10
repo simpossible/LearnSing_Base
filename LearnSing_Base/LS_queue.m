@@ -94,4 +94,8 @@ typedef struct ls_node{
     return self.size;
 }
 
+-(void)dequeue{
+
+}
+
 @end

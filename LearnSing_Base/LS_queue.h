@@ -26,4 +26,6 @@
 -(void*)getLastData;
 
 -(int)getSize;
+
+-(void)dequeue;
 @end

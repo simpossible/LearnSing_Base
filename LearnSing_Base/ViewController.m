@@ -8,6 +8,7 @@
 
 #import "ViewController.h"
 #import "LS_queue.h"
+#import "VoiceRecord.h"
 @interface ViewController ()
 
 @property(nonatomic,strong)UIButton                         *inButton;
@@ -16,19 +17,23 @@
 
 @property(nonatomic,strong)UILabel                          *showLabel;
 @property(nonatomic,strong)NSString                         *showString;
+
+@property(nonatomic,strong)VoiceRecord                      *recorder;
 @end
 
 @implementation ViewController
 
 -(instancetype)init{
     if (self = [super init]) {
-        
+        NSLog(@"viewcontroller");
+      
     }
     return  self;
 }
 
 - (void)viewDidLoad {
     self.queue=[[LS_queue alloc]init];
+      self.recorder = [[VoiceRecord alloc]init];
     self.showString = @"";
     [super viewDidLoad];
     [self createButton];
@@ -39,7 +44,7 @@
 
 -(void)createButton{
     self.inButton = [[UIButton alloc]initWithFrame:CGRectMake(100, 50, 100, 50)];
-    [self.inButton setTitle:@"add" forState:UIControlStateNormal];
+    [self.inButton setTitle:@"start" forState:UIControlStateNormal];
     [self.view addSubview:self.inButton];
     [self.inButton addTarget:self action:@selector(inbuttonClicked:) forControlEvents:UIControlEventTouchUpInside];
     [self.inButton setBackgroundColor:[UIColor greenColor]];
@@ -69,12 +74,14 @@
 
 -(void)inbuttonClicked:(UIButton *)button{
     [button setBackgroundColor:[UIColor blueColor]];
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        int i = 0;
-        while (i<100000){
-            [self.queue push:(void *)([NSNumber numberWithInt:i])];
-            i++;
-        }});
+    [self.recorder start];
+//    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+//        int i = 0;
+//        while (i<100000){
+//            [self.queue push:(void *)([NSNumber numberWithInt:i])];
+//            i++;
+//        }});
+    
 }
 
 -(void)outButtonClicked:(UIButton*)button{
