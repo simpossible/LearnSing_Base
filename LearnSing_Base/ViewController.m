@@ -9,6 +9,7 @@
 #import "ViewController.h"
 #import "LS_queue.h"
 #import "VoiceRecord.h"
+#import "VoicePlay.h"
 @interface ViewController ()
 
 @property(nonatomic,strong)UIButton                         *inButton;
@@ -19,6 +20,8 @@
 @property(nonatomic,strong)NSString                         *showString;
 
 @property(nonatomic,strong)VoiceRecord                      *recorder;
+@property(nonatomic,strong)VoicePlay                        *player;
+
 @end
 
 @implementation ViewController
@@ -33,7 +36,8 @@
 
 - (void)viewDidLoad {
     self.queue=[[LS_queue alloc]init];
-      self.recorder = [[VoiceRecord alloc]init];
+    self.recorder = [[VoiceRecord alloc]init];
+    self.player = [[VoicePlay alloc]init];
     self.showString = @"";
     [super viewDidLoad];
     [self createButton];
@@ -46,6 +50,7 @@
     self.inButton = [[UIButton alloc]initWithFrame:CGRectMake(100, 50, 100, 50)];
     [self.inButton setTitle:@"start" forState:UIControlStateNormal];
     [self.view addSubview:self.inButton];
+    [self.inButton setTag:1];
     [self.inButton addTarget:self action:@selector(inbuttonClicked:) forControlEvents:UIControlEventTouchUpInside];
     [self.inButton setBackgroundColor:[UIColor greenColor]];
     
@@ -53,7 +58,7 @@
     self.outButton = [[UIButton alloc]initWithFrame:CGRectMake(100, 110, 100, 50)];
     [self.outButton setTitle:@"out" forState:UIControlStateNormal];
     [self.outButton setBackgroundColor:[UIColor greenColor]];
-    
+    [self.outButton setTag:1];
     [self.view addSubview:self.outButton];
     [self.outButton addTarget:self action:@selector(outButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
     
@@ -73,31 +78,41 @@
 }
 
 -(void)inbuttonClicked:(UIButton *)button{
+    if (button.tag ==1) {
+        button.tag=2;
     [button setBackgroundColor:[UIColor blueColor]];
     [self.recorder start];
-//    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-//        int i = 0;
-//        while (i<100000){
-//            [self.queue push:(void *)([NSNumber numberWithInt:i])];
-//            i++;
-//        }});
-    
+    }else{
+        button.tag =1;
+        [button setBackgroundColor:[UIColor redColor]];
+        [self.recorder stop];
+    }
 }
 
 -(void)outButtonClicked:(UIButton*)button{
+
     
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        while (1){
-            NSNumber *now = (NSNumber *)[self.queue getLastData];
-            __weak NSString *a = [NSString stringWithFormat:@"_%@",now];
-            if (![self.queue popBack]) {
-                break;
-            }
-            dispatch_async(dispatch_get_main_queue(), ^{
-                self.showLabel.text =a;
-           });
-            
-        }});
+    if (button.tag ==1) {
+        button.tag=2;
+        [button setBackgroundColor:[UIColor blueColor]];
+        [self.player start];
+    }else{
+        button.tag =1;
+        [button setBackgroundColor:[UIColor redColor]];
+        [self.player stop];
+    }
+//    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+//        while (1){
+//            NSNumber *now = (NSNumber *)[self.queue getLastData];
+//            __weak NSString *a = [NSString stringWithFormat:@"_%@",now];
+//            if (![self.queue popBack]) {
+//                break;
+//            }
+//            dispatch_async(dispatch_get_main_queue(), ^{
+//                self.showLabel.text =a;
+//           });
+//            
+//        }});
     
 }
 

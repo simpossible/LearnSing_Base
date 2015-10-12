@@ -10,4 +10,15 @@
 
 @interface VoicePlay : NSObject
 
+-(instancetype)init;
+
+
+-(void)stop;
+
+
+-(void)start;
+
+
+-(void)pause;
+
 @end

@@ -7,7 +7,7 @@
 //
 
 #import "AppDelegate.h"
-
+#import "LS_queue.h"
 @interface AppDelegate ()
 
 @end
@@ -16,6 +16,7 @@
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+    [LS_queue defaultQueue];
     // Override point for customization after application launch.
     return YES;
 }

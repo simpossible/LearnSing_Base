@@ -8,7 +8,11 @@
 #define KNUMBERBUFFER 5
 
 #import "VoiceRecord.h"
+#import "LS_queue.h"
 
+@interface VoiceRecord ()
+@property(nonatomic,strong)LS_queue                     *dataQueue;
+@end
 
 typedef struct VoRecordState{
     AudioStreamBasicDescription mDataFormate;
@@ -22,14 +26,16 @@ typedef struct VoRecordState{
 
 static VoRecordState vos;
 static void handleVoiceRecordBuffer(void *userdata,AudioQueueRef Voqueue,AudioQueueBufferRef inbuffer,const AudioTimeStamp *start,UInt32 inNumPackts,const AudioStreamPacketDescription *inPacketDesc){
-    NSLog(@"callback");
+    LS_queue *queue=(__bridge LS_queue*)userdata;
+    //void *temp;
+    void *temp = malloc(sizeof(*(inbuffer->mAudioData)));
+    memcpy(temp, inbuffer->mAudioData,sizeof(inbuffer->mAudioData));
+    [queue push:temp];
+    AudioQueueEnqueueBuffer(vos.mQueue, inbuffer, 0, NULL);
     
 }
 
-@interface VoiceRecord ()
 
-
-@end
 
 @implementation VoiceRecord
 
@@ -43,14 +49,14 @@ void DeriveBufferSize(AudioQueueRef audioqueue,AudioStreamBasicDescription asbDe
     Float64 numByteForTime = asbDescription.mSampleRate *maxPacketSize*seconds;
     *outBuffersize = (UInt32)(numByteForTime<maxBufferSize?numByteForTime:maxBufferSize);
     
-    
+
     
 }
 
 
 -(instancetype)init{
     if (self =[super init]) {
-        
+        self.dataQueue = [LS_queue defaultQueue];
     }
     vos.mDataFormate.mSampleRate = 16000;
     vos.mDataFormate.mFormatID = kAudioFormatLinearPCM;
@@ -61,7 +67,7 @@ void DeriveBufferSize(AudioQueueRef audioqueue,AudioStreamBasicDescription asbDe
     vos.mDataFormate.mFramesPerPacket =1;
     vos.mDataFormate.mFormatFlags = kLinearPCMFormatFlagIsBigEndian|kLinearPCMFormatFlagIsSignedInteger|kLinearPCMFormatFlagIsPacked;
     
-    AudioQueueNewInput(&vos.mDataFormate, handleVoiceRecordBuffer, &vos, NULL, kCFRunLoopCommonModes, 0, &vos.mQueue);
+    AudioQueueNewInput(&vos.mDataFormate, handleVoiceRecordBuffer, (__bridge void * _Nullable)(self.dataQueue), NULL, kCFRunLoopCommonModes, 0, &vos.mQueue);
     DeriveBufferSize(vos.mQueue,vos.mDataFormate,0.1,&vos.bufferByteSize);
     
     for (int i =0; i<KNUMBERBUFFER; i++) {
@@ -75,7 +81,18 @@ void DeriveBufferSize(AudioQueueRef audioqueue,AudioStreamBasicDescription asbDe
 
 
 -(void)start{
+    [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayAndRecord error:nil];
+    [[AVAudioSession sharedInstance]setActive:YES error:nil];
 OSStatus sta =  AudioQueueStart(vos.mQueue, NULL);
-    NSLog(@"the start stat is %d",sta);
+    NSLog(@"the record start stat is %d",sta);
+}
+
+-(void)pause{
+
+}
+
+-(void)stop{
+    OSStatus sta =  AudioQueueStop(vos.mQueue, true);
+    NSLog(@"the record stop stat is %d",sta);
 }
 @end

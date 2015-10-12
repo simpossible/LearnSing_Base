@@ -16,13 +16,23 @@ typedef struct ls_node{
 
 @interface LS_queue()
 @property(atomic,assign)int              size;
-
 @property(nonatomic,assign)node             *first;
 @property(nonatomic,assign)node             *last;
 @property(nonatomic,assign)int              maxSize;
 @end
 
+
 @implementation LS_queue
+
++(LS_queue*)defaultQueue{
+    static LS_queue *defaultQueue = nil;
+    static dispatch_once_t dispathconce;
+    dispatch_once(&dispathconce, ^{
+            defaultQueue = [[LS_queue alloc]init];
+    });
+    return defaultQueue;
+}
+
 
 -(instancetype)init{
     if (self = [super init]) {
@@ -41,7 +51,9 @@ typedef struct ls_node{
 }
 
 
+
 -(void)push:(void*)data{
+   
     if (_size == 0) {
         _first->content = data;
         _size =1;
@@ -56,12 +68,12 @@ typedef struct ls_node{
         _first = content_node;
         _size ++;
     }
-   
+
+    NSLog(@"puch %d",_size);
    
 }
 -(BOOL)popBack{
     if (_size == 0) {
-        NSLog(@"pop 0 size is %d",_size);
         return false;
     }else if(_size == 1){
         _last->content = NULL;
@@ -76,7 +88,25 @@ typedef struct ls_node{
     }
 }
 
+-(BOOL)popBackAndFreeContent{
 
+    if (_size == 0) {
+        return false;
+    }else if(_size == 1){
+        free(_last->content);
+        _last->content = NULL;
+        _size =0;
+        return true;
+    }else{
+        free(_last->content);
+        _last = _last->pre;
+        free(_last->next);
+        _last->next = NULL;
+        _size--;
+        return true;
+    }
+    NSLog(@"popback sizei is %d",_size);
+}
 -(void *)getFirstData{
     return _first->content;
 }

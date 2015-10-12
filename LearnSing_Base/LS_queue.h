@@ -12,6 +12,8 @@
 
 @interface LS_queue : NSObject
 
++(LS_queue*)defaultQueue;
+
 -(instancetype)init;
 
 //在首端插入一个节点
@@ -19,6 +21,9 @@
 
 //删除末尾节点，但至少保留一个节点
 -(BOOL)popBack;
+
+/*删除节点并释放其中的类容*/
+-(BOOL)popBackAndFreeContent;
 
 -(void *)getFirstData;
 
