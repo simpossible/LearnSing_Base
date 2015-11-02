@@ -36,7 +36,7 @@ void HandleOutputBuffer(void *userData,AudioQueueRef outQueue,AudioQueueBufferRe
     void *data = [oq getFirstData];
     outBuffer->mAudioDataByteSize = sizeof(*data);
 
-    Byte *a = (Byte*)outBuffer->mAudioData;
+    Byte*a = (Byte*)outBuffer->mAudioData;
     Byte *src = (Byte*)data;
     int size = sizeof(*data);
     for (int i =0; i<size; i++) {
@@ -61,30 +61,27 @@ void HandleOutputBuffer(void *userData,AudioQueueRef outQueue,AudioQueueBufferRe
     vps.mDataFormate.mFramesPerPacket =1;
     vps.mDataFormate.mBitsPerChannel = 16;
     vps.mDataFormate.mBytesPerPacket =
-    vps.mDataFormate.mBytesPerFrame = vps.mDataFormate.mBytesPerFrame *sizeof(SInt16);
+    vps.mDataFormate.mBytesPerFrame = vps.mDataFormate.mChannelsPerFrame *sizeof(SInt16);
     vps.mDataFormate.mFormatFlags = kLinearPCMFormatFlagIsBigEndian|kLinearPCMFormatFlagIsSignedInteger|kLinearPCMFormatFlagIsPacked;
-    AudioQueueNewOutput(&vps.mDataFormate, HandleOutputBuffer, (__bridge void * _Nullable)(self.dataQueue), CFRunLoopGetCurrent(), kCFRunLoopCommonModes, 0, &vps.mQueue);
-    for (int i =0; i<5; i++) {
-        AudioQueueAllocateBuffer(vps.mQueue, vps.bufferByteSize, &vps.mBuffers[i]);
-        //AudioQueueEnqueueBuffer(vps.mQueue, vps.mBuffers[i], 0, NULL);
-        AudioQueueEnqueueBuffer(vps.mQueue, vps.mBuffers[i], 0, NULL);
-       // HandleOutputBuffer((__bridge void*)self.dataQueue, vps.mQueue, vps.mBuffers[i]);
-    }
-    
+   OSStatus sta= AudioQueueNewOutput(&vps.mDataFormate, HandleOutputBuffer, (__bridge void * _Nullable)(self.dataQueue), nil, nil, 0, &vps.mQueue);
+    NSLog(@"the new output is %d",sta);
+   
     return self;
 }
 
 
 -(void)start{
-    [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayAndRecord error:nil];
-    [[AVAudioSession sharedInstance]setActive:YES error:nil];
-    OSStatus sta = AudioQueueStart(vps.mQueue, NULL);
-     NSLog(@"the play start stat is %d",sta);
+    for (int i =0; i<5; i++) {
+        AudioQueueAllocateBuffer(vps.mQueue, 6400, &vps.mBuffers[i]);
+//        HandleOutputBuffer(nil, vps.mQueue, vps.mBuffers[i]);
+        AudioQueueEnqueueBuffer(vps.mQueue, vps.mBuffers[i], 0, NULL);
+    }
+    OSStatus sta = AudioQueueStart(vps.mQueue, 0);
+    NSLog(@"the play start stat is %d",sta);
 }
 
 
 -(void)stop{
-
     OSStatus sta =  AudioQueueStop(vps.mQueue, true);
     NSLog(@"the play stop stat is %d",sta);
 }

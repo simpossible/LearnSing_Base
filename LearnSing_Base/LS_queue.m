@@ -73,6 +73,7 @@ typedef struct ls_node{
    
 }
 -(BOOL)popBack{
+     NSLog(@"popback sizei is %d",_size);
     if (_size == 0) {
         return false;
     }else if(_size == 1){
@@ -89,7 +90,7 @@ typedef struct ls_node{
 }
 
 -(BOOL)popBackAndFreeContent{
-
+   NSLog(@"popback sizei is %d",_size);
     if (_size == 0) {
         return false;
     }else if(_size == 1){
@@ -105,7 +106,7 @@ typedef struct ls_node{
         _size--;
         return true;
     }
-    NSLog(@"popback sizei is %d",_size);
+ 
 }
 -(void *)getFirstData{
     return _first->content;
